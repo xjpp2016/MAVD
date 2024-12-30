@@ -11,10 +11,9 @@ class TCNModel(nn.Module):
         self.tcn = TemporalConvNet(input_size, num_channels, kernel_size=kernel_size, dropout=dropout)
 
     def forward(self, x):
-        # 输入形状: (B, T, F)
-        x = x.permute(0, 2, 1)  # 转换形状为 (B, F, T)
+        x = x.permute(0, 2, 1) 
         f = self.tcn(x)
-        f = f.permute(0, 2, 1)  # 转换形状为 (B, T, F)
+        f = f.permute(0, 2, 1) 
         return f
 
 
