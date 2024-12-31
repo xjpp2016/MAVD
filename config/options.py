@@ -34,10 +34,10 @@ parser.add_argument('--test-audio-list', default='./list/audio_test.list', help=
 parser.add_argument('--max_seqlen', type=int, default=200, help='maximum sequence length during training')
 parser.add_argument('--gt', default='./list/gt.npy', help='file of ground truth ')
 
-parser.add_argument('--lamda1', type = float, default = 9.0)
-parser.add_argument('--lamda2', type = float, default = 0.05)
+parser.add_argument('--lamda1', type = float, default = 10.0)
+parser.add_argument('--lamda2', type = float, default = 0.01)
 parser.add_argument('--lamda3', type = float, default = 10.0)
-parser.add_argument('--lamda4', type = float, default = 0.01)
+parser.add_argument('--lamda4', type = float, default = 0.001)
 
 
 
