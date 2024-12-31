@@ -1,7 +1,7 @@
-python=3.9.18
+python==3.9.18
 numpy==1.26.3
-torchaudio==2.2.1+cu121
-torchvision==0.17.1+cu121
+torchaudio==2.2.1
+torchvision==0.17.1
 scikit-learn==1.5.1
 einops==0.8.0
 tqdm==4.66.5
