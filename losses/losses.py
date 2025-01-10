@@ -146,7 +146,7 @@ class DISL_Loss(nn.Module):
         ce_VF = self.cross_entropy_loss(V, F)
         ce_AF = self.cross_entropy_loss(A, F)
 
-        return d_VA + d_VF + d_AF + ce_VA + ce_VF + ce_AF, d_VA+d_VF+d_AF, ce_VA+ce_VF+ce_AF
+        return d_VA + d_VF + d_AF + ce_VA + ce_VF + ce_AF
 
     def get_triplet_loss(self, vaf_result, label, seq_len):
 
@@ -201,8 +201,9 @@ class DISL_Loss(nn.Module):
         f_loss = self.get_mil_loss(vf_result, label)
         raf_loss = self.get_mil_loss(vaf_result, label)
 
-        ma_loss, nfms_loss, sq_loss = self.get_alignment_loss(v_result, va_result, vf_result, seq_len)
+        ma_loss = self.get_alignment_loss(v_result, va_result, vf_result, seq_len)
         ma_loss = ma_loss + 0.01*(a_loss + f_loss)
+        
         triplet_loss = self.get_triplet_loss(vaf_result, label, seq_len)
 
         total_loss = lamda1*ma_loss + lamda2*raf_loss + lamda3*triplet_loss
