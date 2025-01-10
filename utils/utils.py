@@ -25,7 +25,7 @@ def norm(data):
     
 def save_best_record(test_info, file_path):
     fo = open(file_path, "w")
-    fo.write("epoch: {}\n".format(test_info["epoch"][-1]))
+    fo.write("iteration: {}\n".format(test_info["iteration"][-1]))
     fo.write("m_ap: {:.4f}\n".format(test_info["m_ap"][-1]))
 
 

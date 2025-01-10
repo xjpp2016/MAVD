@@ -8,9 +8,9 @@ from train_test.train import *
 from train_test.test import *
 from utils.utils import *
 from losses.losses import * 
-from model.single_view import *
-from model.multi_view import *
-from model.distillation import *
+from model.unimodal import *
+from model.multimodal import *
+from model.projection import *
 from dataset.dataset_loader import *
 
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     args = options.init_args(args)
     set_seed(args.seed)
     
-    lamda1, lamda2, lamda3, lamda4 = args.lamda1, args.lamda2, args.lamda3, args.lamda4 
+    lamda1, lamda2, lamda3= args.lamda1, args.lamda2, args.lamda3
 
     train_loader = data.DataLoader(Dataset(args, test_mode=False),
                               batch_size=args.batch_size, shuffle=True,
@@ -30,19 +30,19 @@ if __name__ == "__main__":
                              batch_size=5, shuffle=False,
                              num_workers=args.workers, pin_memory=True)
 
-    v_net = SingleView(input_size=1024, h_dim=128, feature_dim=128)
-    a_net = SingleView(input_size=128, h_dim=64, feature_dim=32)
-    f_net = SingleView(input_size=1024, h_dim=128, feature_dim=64)
+    v_net = Unimodal(input_size=1024, h_dim=128, feature_dim=128)
+    a_net = Unimodal(input_size=128, h_dim=64, feature_dim=32)
+    f_net = Unimodal(input_size=1024, h_dim=128, feature_dim=64)
     v_net = v_net.cuda()
     a_net = a_net.cuda()
     f_net = f_net.cuda()
 
-    va_net = Distillation(32, 32, 32)
-    vf_net = Distillation(64, 64, 64)
+    va_net = Projection(32, 32, 32)
+    vf_net = Projection(64, 64, 64)
     va_net = va_net.cuda()
     vf_net = vf_net.cuda()
 
-    vaf_net = MultiView(input_size=128+32+64, h_dim=128, feature_dim=64)
+    vaf_net = Multimodal(input_size=128+32+64, h_dim=128, feature_dim=64)
     vaf_net = vaf_net.cuda()
     
     optimizer = torch.optim.Adam(list(v_net.parameters())+list(a_net.parameters())+list(f_net.parameters())+list(va_net.parameters())+list(vf_net.parameters())+list(vaf_net.parameters()), 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     criterion_disl = DISL_Loss()
     
     best_ap = 0.0
-    test_info = {"epoch": [], "m_ap":[]}
+    test_info = {"iteration": [], "m_ap":[]}
 
     gt = np.load(args.gt)
 
@@ -65,16 +65,15 @@ if __name__ == "__main__":
                     train_loader_iter, 
                     optimizer,
                     criterion, criterion_disl, step,
-                    lamda1, lamda2, lamda3, lamda4)
+                    lamda1, lamda2, lamda3)
         for param_group in optimizer.param_groups:
             current_lr = param_group["lr"]
 
         print(f'Step: {step}, '
             f'U_MIL_loss: {loss_dict_list["U_MIL_loss"]:.6f}, '
-            f'ma_loss: {loss_dict_list_disl["ma_loss"]:.6f}, '
-            f'af_loss: {loss_dict_list_disl["af_loss"]:.6f}, '
-            f'raf_loss: {loss_dict_list_disl["raf_loss"]:.6f}, '
-            f'triplet_loss: {loss_dict_list_disl["triplet_loss"]:.6f}, '
+            f'MA_loss: {loss_dict_list_disl["MA_loss"]:.6f}, '
+            f'M_MIL_loss: {loss_dict_list_disl["M_MIL_loss"]:.6f}, '
+            f'Triplet_loss: {loss_dict_list_disl["Triplet_loss"]:.6f}, '
             f'LR: {current_lr:.6f} '
             )
 

@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.init as init
 from torch.nn.modules.module import Module
 
-class Distillation(Module):
+class Projection(Module):
     def __init__(self, input_dim, h_dim, output_dim, dropout_rate=0.0):
         super().__init__()
         self.regressor = nn.Sequential(nn.Linear(input_dim, h_dim), nn.ReLU(), nn.Dropout(dropout_rate),

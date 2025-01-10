@@ -2,20 +2,21 @@ import torch
 import torch.nn as nn
 import torch.nn.init as init
 from torch.nn.modules.module import Module
-from model.tcn import TemporalConvNet
+from model.self_attention import Transformer
 
-
-class TCNModel(nn.Module):
-    def __init__(self, input_size, num_channels, kernel_size=2, dropout=0.0):
-        super(TCNModel, self).__init__()
-        self.tcn = TemporalConvNet(input_size, num_channels, kernel_size=kernel_size, dropout=dropout)
-
-    def forward(self, x):
-        x = x.permute(0, 2, 1) 
-        f = self.tcn(x)
-        f = f.permute(0, 2, 1) 
-        return f
-
+class Temporal(Module):
+    def __init__(self, input_size, out_size):
+        super(Temporal, self).__init__()
+        self.conv_1 = nn.Sequential(
+            nn.Conv1d(in_channels=input_size, out_channels=out_size, kernel_size=3,
+                    stride=1, padding=1),
+            nn.ReLU(),
+        )
+    def forward(self, x):  
+        x = x.permute(0, 2, 1)
+        x = self.conv_1(x)
+        x = x.permute(0, 2, 1)
+        return x
 
 class MIL(nn.Module):
     def __init__(self, input_dim, h_dim=512, dropout_rate=0.0):
@@ -41,25 +42,23 @@ class MIL(nn.Module):
         mmil_logits = self.filter(avf_out, seq_len)
         return mmil_logits, avf_out    
 
-class MultiView(Module):
-    def __init__(self, input_size, h_dim=32, feature_dim=64):
+class Unimodal(Module):
+    def __init__(self, input_size, h_dim=512, feature_dim=64):
         super().__init__()
 
-        self.embedding = nn.Sequential(nn.Linear(input_size, input_size//2), nn.ReLU(), nn.Dropout(0.0),
-                                        nn.Linear(input_size//2, feature_dim), nn.ReLU())
-        self.tcn = TCNModel(input_size=feature_dim, num_channels=[feature_dim, feature_dim, feature_dim])
+        self.embedding = Temporal(input_size,feature_dim)
+        self.selfatt = Transformer(feature_dim, 2, 4, feature_dim//2, feature_dim, dropout = 0.0)
 
         self.mil = MIL(input_dim=feature_dim, h_dim=h_dim)
 
+    def forward(self, data, seq_len=None, em_flag=True):
 
-    def forward(self, data, seq_len=None):
-
-        data = self.embedding(data)
-        data = self.tcn(data)
+        if em_flag is True:
+            data = self.embedding(data) 
+            data = self.selfatt(data)
 
         output, avf_out = self.mil(data, seq_len)
             
         return {"output": output,
                 "avf_out": avf_out,
                 "satt_f": data}
-    

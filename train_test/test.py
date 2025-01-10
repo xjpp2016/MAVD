@@ -38,7 +38,7 @@ def test(v_net, a_net, f_net, va_net, vf_net, vaf_net, test_loader, gt, test_inf
         precision, recall, th = precision_recall_curve(list(gt), np.repeat(m_pred, 16))
         m_ap = auc(recall, precision)
 
-        test_info["epoch"].append(epoch)
+        test_info["iteration"].append(epoch)
         test_info["m_ap"].append(m_ap)
 
         

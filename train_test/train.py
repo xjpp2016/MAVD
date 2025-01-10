@@ -1,7 +1,7 @@
 import torch
 from tqdm import tqdm
 
-def train(v_net, a_net, f_net, va_net, vf_net, vaf_net, dataloader, optimizer, criterion, criterion_disl, index, lamda1, lamda2, lamda3, lamda4):
+def train(v_net, a_net, f_net, va_net, vf_net, vaf_net, dataloader, optimizer, criterion, criterion_disl, index, lamda1, lamda2, lamda3):
 
     with torch.set_grad_enabled(True):
 
@@ -43,7 +43,7 @@ def train(v_net, a_net, f_net, va_net, vf_net, vaf_net, dataloader, optimizer, c
         vf_output = f_net(f_input, seq_len, em_flag=False)
         vaf_output = vaf_net(vaf_input, seq_len)
 
-        total_loss_disl, loss_dict_list_disl = criterion_disl(v_predict, va_output, vf_output, vaf_output, label, seq_len.cuda(), lamda1, lamda2, lamda3, lamda4)
+        total_loss_disl, loss_dict_list_disl = criterion_disl(v_predict, va_output, vf_output, vaf_output, label, seq_len.cuda(), lamda1, lamda2, lamda3)
 
         total_loss = total_loss + total_loss_disl
 

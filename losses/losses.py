@@ -146,7 +146,7 @@ class DISL_Loss(nn.Module):
         ce_VF = self.cross_entropy_loss(V, F)
         ce_AF = self.cross_entropy_loss(A, F)
 
-        return d_VA + d_VF + d_AF + ce_VA + ce_VF + ce_AF
+        return d_VA + d_VF + d_AF + ce_VA + ce_VF + ce_AF, d_VA+d_VF+d_AF, ce_VA+ce_VF+ce_AF
 
     def get_triplet_loss(self, vaf_result, label, seq_len):
 
@@ -194,22 +194,22 @@ class DISL_Loss(nn.Module):
 
         return triplet_margin_loss
      
-    def forward(self, v_result, va_result, vf_result, vaf_result, label, seq_len, lamda1, lamda2, lamda3, lamda4):
+    def forward(self, v_result, va_result, vf_result, vaf_result, label, seq_len, lamda1, lamda2, lamda3):
 
         label = label.float()
         a_loss = self.get_mil_loss(va_result, label)
         f_loss = self.get_mil_loss(vf_result, label)
         raf_loss = self.get_mil_loss(vaf_result, label)
 
-        ma_loss = self.get_alignment_loss(v_result, va_result, vf_result, seq_len)
+        ma_loss, nfms_loss, sq_loss = self.get_alignment_loss(v_result, va_result, vf_result, seq_len)
+        ma_loss = ma_loss + 0.01*(a_loss + f_loss)
         triplet_loss = self.get_triplet_loss(vaf_result, label, seq_len)
 
-        total_loss = lamda1*ma_loss + lamda2*(a_loss + f_loss) + lamda3*raf_loss + lamda4*triplet_loss
+        total_loss = lamda1*ma_loss + lamda2*raf_loss + lamda3*triplet_loss
 
         loss_dict = {}
-        loss_dict['ma_loss'] = ma_loss
-        loss_dict['af_loss'] = a_loss + f_loss
-        loss_dict['raf_loss'] = raf_loss
-        loss_dict['triplet_loss'] = triplet_loss
+        loss_dict['MA_loss'] = ma_loss
+        loss_dict['M_MIL_loss'] = raf_loss
+        loss_dict['Triplet_loss'] = triplet_loss
 
         return total_loss, loss_dict
