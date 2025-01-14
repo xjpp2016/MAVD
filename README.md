@@ -1,5 +1,5 @@
 # MAVD
- Aligning First, Then Fusing: A Novel Weakly-Supervised Multimodal Violence Detection Method
+ Aligning First, Then Fusing: A Novel Weakly Supervised Multimodal Violence Detection Method
 
 
  <p align="center">
