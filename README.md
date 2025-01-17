@@ -30,8 +30,8 @@ Weakly supervised violence detection refers to the technique of training models 
 ```
     python get_result.py
 ```
-    
-    Directly utilizing the pre-trained multimodal alignment model (for enhancing the performance of multimodal fusion models)
+
+## Pre-trained Alignment Models
 ```
     import torch
 
