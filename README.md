@@ -52,6 +52,19 @@ Weakly supervised violence detection refers to the technique of training models 
 
 ## Citation
 If you find this repo useful for your research, please consider citing our paper:
+'''
+@article{MAVD,
+title = {Aligning First, Then Fusing: A novel weakly supervised multimodal violence detection method},
+journal = {Knowledge-Based Systems},
+pages = {113709},
+year = {2025},
+issn = {0950-7051},
+doi = {https://doi.org/10.1016/j.knosys.2025.113709},
+url = {https://www.sciencedirect.com/science/article/pii/S0950705125007555},
+author = {Wenping Jin and Li Zhu and Jing Sun},
+}
+'''
+
 ```
 @article{jin2025aligning,
   title={Aligning First, Then Fusing: A Novel Weakly Supervised Multimodal Violence Detection Method},
