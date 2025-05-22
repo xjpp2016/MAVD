@@ -64,6 +64,14 @@ url = {https://www.sciencedirect.com/science/article/pii/S0950705125007555},
 author = {Wenping Jin and Li Zhu and Jing Sun},
 }
 ```
+```
+@article{jin2025aligning,
+  title={Aligning First, Then Fusing: A Novel Weakly Supervised Multimodal Violence Detection Method},
+  author={Jin, Wenping and Zhu, Li and Sun, Jing},
+  journal={arXiv preprint arXiv:2501.07496},
+  year={2025}
+}
+```
 
 ## Acknowledgements
 Some of the code is derived from [UR-DMU](https://github.com/henrryzh1/UR-DMU) and [MSBT](https://github.com/shengyangsun/MSBT). We sincerely thank the authors for their valuable contributions.
