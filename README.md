@@ -50,6 +50,11 @@ Weakly supervised violence detection refers to the technique of training models 
     feature_flow = vf_net(f_net(feature_flow from backbone))
 
 
+## Multimodal Alignment
+
+loss.py -> DISL_Loss -> get_alignment_loss()
+
+
 ## Citation
 If you find this repo useful for your research, please consider citing our paper:
 ```
