@@ -51,9 +51,9 @@ Weakly supervised violence detection refers to the technique of training models 
 
 
 ## Multimodal Alignment
-
+```
 loss.py -> DISL_Loss -> get_alignment_loss()
-
+```
 
 ## Citation
 If you find this repo useful for your research, please consider citing our paper:
