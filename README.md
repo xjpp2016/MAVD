@@ -54,6 +54,9 @@ Weakly supervised violence detection refers to the technique of training models 
 ```
 losses -> losses.py -> DISL_Loss -> get_alignment_loss()
 ```
+The **Modality-wise Feature Matching Subspaces (MFMSs)** are computed here by invoking `match_sparsify`, which is also implemented in the same `losses.py` file. We encourage researchers to adopt this method and kindly request that you **cite our work** if you use this approach in your research.
+
+
 
 ## Citation
 If you find this repo useful for your research, please consider citing our paper:
