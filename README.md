@@ -11,6 +11,13 @@
 ## Abstract
 Weakly supervised violence detection refers to the technique of training models to identify violent segments in videos using only video-level labels. Among these approaches, multimodal violence detection, which integrates modalities such as audio and optical flow, holds great potential. Existing methods in this domain primarily focus on designing multimodal fusion models to address modality discrepancies. In contrast, we take a different approach; leveraging the inherent discrepancies across modalities in violence event representation to propose a novel multimodal semantic feature alignment method. This method sparsely maps the semantic features of local, transient, and less informative modalities ( such as audio and optical flow ) into the more informative RGB semantic feature space. Through an iterative process, the method identifies the suitable no-zero feature matching subspace and aligns the modality-specific event representations based on this subspace, enabling the full exploitation of information from all modalities during the subsequent modality fusion stage. Building on this, we design a new weakly supervised violence detection framework that consists of unimodal multiple-instance learning for extracting unimodal semantic features, multimodal alignment, multimodal fusion, and final detection. Experimental results on benchmark datasets demonstrate the effectiveness of our method, achieving an average precision (AP) of 86.07% on the XD-Violence dataset. Our code is available at https://github.com/xjpp2016/MAVD.
 
+
+## Multimodal Alignment
+```
+losses -> losses.py -> DISL_Loss -> get_alignment_loss()
+```
+The **Modality-wise Feature Matching Subspaces (MFMSs)** are computed here by invoking `match_sparsify`, which is also implemented in the same `losses.py` file. We encourage researchers to adopt this method and kindly request that you **cite our work** if you use this approach in your research.
+
 ## Requirements  
 
     python
@@ -48,13 +55,6 @@ Weakly supervised violence detection refers to the technique of training models 
     feature_RGB = v_net(feature_RGB from backbone)
     feature_audio = va_net(a_net(feature_audio from backbone))
     feature_flow = vf_net(f_net(feature_flow from backbone))
-
-
-## Multimodal Alignment
-```
-losses -> losses.py -> DISL_Loss -> get_alignment_loss()
-```
-The **Modality-wise Feature Matching Subspaces (MFMSs)** are computed here by invoking `match_sparsify`, which is also implemented in the same `losses.py` file. We encourage researchers to adopt this method and kindly request that you **cite our work** if you use this approach in your research.
 
 
 
